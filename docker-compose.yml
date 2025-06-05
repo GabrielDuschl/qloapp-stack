@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:5.7
+    container_name: qloapps-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: qloapps
+      MYSQL_USER: qloapps_user
+      MYSQL_PASSWORD: qloapps_pwd
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - qloapps-net
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: qloapps:latest
+    container_name: qloapps-app
+    depends_on:
+      - db
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    networks:
+      - qloapps-net
+
+volumes:
+  db_data:
+
+networks:
+  qloapps-net:
+    driver: bridge
