@@ -11,8 +11,6 @@ services:
     env_file:
       - ./stack.env
 
-    environment:
-
     volumes:
       - db_data:/var/lib/mysql
 
