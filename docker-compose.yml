@@ -20,6 +20,7 @@ services:
       - db
     restart: unless-stopped
 
+    # Port‐Mapping nur für die Erstinstallation
     ports:
       - "8080:80"
 
@@ -31,6 +32,7 @@ services:
       DB_USER:     "${MYSQL_USER}"
       DB_PASSWORD: "${MYSQL_PASSWORD}"
 
+    # damit Deine install‐Daten erhalten bleiben
     volumes:
       - html_data:/var/www/html
 
