@@ -29,7 +29,7 @@ services:
     restart: unless-stopped
 
     expose:
-      - "80"
+      - "8080:80"
       
     env_file:
       - ./stack.env
