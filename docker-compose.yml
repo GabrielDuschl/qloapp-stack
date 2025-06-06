@@ -19,8 +19,11 @@ services:
     depends_on:
       - db
     restart: unless-stopped
-    expose:
-      - "80"
+
+    # Port‐Mapping nur für die Erstinstallation
+    ports:
+      - "8080:80"
+
     env_file:
       - ./stack.env
     environment:
@@ -28,11 +31,17 @@ services:
       DB_NAME:     "${MYSQL_DATABASE}"
       DB_USER:     "${MYSQL_USER}"
       DB_PASSWORD: "${MYSQL_PASSWORD}"
+
+    # damit Deine install‐Daten erhalten bleiben
+    volumes:
+      - html_data:/var/www/html
+
     networks:
       - proxy-network
 
 volumes:
   db_data:
+  html_data:
 
 networks:
   proxy-network:
