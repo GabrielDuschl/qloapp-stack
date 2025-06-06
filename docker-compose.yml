@@ -5,11 +5,13 @@ services:
     image: mysql:5.7
     restart: unless-stopped
 
+    # ← Hier binden wir explizit genau die "stack.env" ein
+    #    Portainer kopiert sie in /data/compose/<ID>/stack.env,
+    #    und docker-compose weiß: "env_file" liest aus dieser Datei.
+    env_file:
+      - ./stack.env
+
     environment:
-      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
-      MYSQL_DATABASE:      "${MYSQL_DATABASE}"
-      MYSQL_USER:          "${MYSQL_USER}"
-      MYSQL_PASSWORD:      "${MYSQL_PASSWORD}"
 
     volumes:
       - db_data:/var/lib/mysql
@@ -30,12 +32,16 @@ services:
 
     expose:
       - "80"
+      
+    env_file:
+      - ./stack.env
 
     environment:
       DB_HOST:     "db"
-      DB_NAME:     "${MYSQL_DATABASE}"
-      DB_USER:     "${MYSQL_USER}"
+      DB_NAME:     "${MYSQL_DATABASE}"   
+      DB_USER:     "${MYSQL_USER}"       
       DB_PASSWORD: "${MYSQL_PASSWORD}"
+
 
     networks:
       - proxy-network
