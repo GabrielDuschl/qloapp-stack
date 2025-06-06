@@ -4,16 +4,10 @@ services:
   db:
     image: mysql:5.7
     restart: unless-stopped
-
-    # ← Hier binden wir explizit genau die "stack.env" ein
-    #    Portainer kopiert sie in /data/compose/<ID>/stack.env,
-    #    und docker-compose weiß: "env_file" liest aus dieser Datei.
     env_file:
       - ./stack.env
-
     volumes:
       - db_data:/var/lib/mysql
-
     networks:
       - proxy-network
 
@@ -22,25 +16,21 @@ services:
       context: .
       dockerfile: Dockerfile
     image: qloapps:latest
-
     depends_on:
       - db
-
     restart: unless-stopped
 
-    expose:
+    # Port 8080 auf Host auf Port 80 im Container mappen, damit Installation per Browser möglich ist
+    ports:
       - "8080:80"
-      
+
     env_file:
       - ./stack.env
-
     environment:
       DB_HOST:     "db"
-      DB_NAME:     "${MYSQL_DATABASE}"   
-      DB_USER:     "${MYSQL_USER}"       
+      DB_NAME:     "${MYSQL_DATABASE}"
+      DB_USER:     "${MYSQL_USER}"
       DB_PASSWORD: "${MYSQL_PASSWORD}"
-
-
     networks:
       - proxy-network
 
@@ -50,3 +40,4 @@ volumes:
 networks:
   proxy-network:
     external: true
+
