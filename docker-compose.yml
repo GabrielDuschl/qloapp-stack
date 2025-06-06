@@ -19,11 +19,8 @@ services:
     depends_on:
       - db
     restart: unless-stopped
-
-    # Port 8080 auf Host auf Port 80 im Container mappen, damit Installation per Browser möglich ist
-    ports:
-      - "8080:80"
-
+    expose:
+      - "80"
     env_file:
       - ./stack.env
     environment:
@@ -40,4 +37,3 @@ volumes:
 networks:
   proxy-network:
     external: true
-
