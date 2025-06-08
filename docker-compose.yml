@@ -7,10 +7,9 @@ services:
     env_file:
       - ./stack.env
     volumes:
-      - db_data_test:/var/lib/mysql
-    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+      - db_data:/var/lib/mysql
     networks:
-      - internal-network
+      - proxy-network
 
   web:
     build:
@@ -25,21 +24,16 @@ services:
     env_file:
       - ./stack.env
     environment:
-      DB_HOST: db
-      DB_NAME: "${MYSQL_DATABASE}"
-      DB_USER: "${MYSQL_USER}"
+      DB_HOST:     "db"
+      DB_NAME:     "${MYSQL_DATABASE}"
+      DB_USER:     "${MYSQL_USER}"
       DB_PASSWORD: "${MYSQL_PASSWORD}"
-    volumes:
-      - web_data_test:/var/www/html
     networks:
-      - internal-network
       - proxy-network
 
 volumes:
-  db_data_test:
-  web_data_test:
+  db_data:
 
 networks:
-  internal-network: {}
   proxy-network:
     external: true
