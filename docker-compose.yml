@@ -9,7 +9,7 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     networks:
-      - proxy-network
+      - internal-network
 
   web:
     build:
@@ -29,11 +29,15 @@ services:
       DB_USER:     "${MYSQL_USER}"
       DB_PASSWORD: "${MYSQL_PASSWORD}"
     networks:
+      - internal-network
       - proxy-network
 
 volumes:
   db_data:
 
 networks:
+  internal-network:
+    name: ${COMPOSE_PROJECT_NAME}_internal-network
+    driver: bridge
   proxy-network:
     external: true
