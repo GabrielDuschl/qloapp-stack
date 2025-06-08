@@ -9,7 +9,7 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     networks:
-      - proxy-network
+      - internal-network
 
   web:
     build:
@@ -24,16 +24,18 @@ services:
     env_file:
       - ./stack.env
     environment:
-      DB_HOST:     "db"
-      DB_NAME:     "${MYSQL_DATABASE}"
-      DB_USER:     "${MYSQL_USER}"
+      DB_HOST: db
+      DB_NAME: "${MYSQL_DATABASE}"
+      DB_USER: "${MYSQL_USER}"
       DB_PASSWORD: "${MYSQL_PASSWORD}"
     networks:
+      - internal-network
       - proxy-network
 
 volumes:
   db_data:
 
 networks:
+  internal-network: {}   
   proxy-network:
-    external: true
+    external: true        
