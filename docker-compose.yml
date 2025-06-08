@@ -28,14 +28,17 @@ services:
       DB_NAME: "${MYSQL_DATABASE}"
       DB_USER: "${MYSQL_USER}"
       DB_PASSWORD: "${MYSQL_PASSWORD}"
+    volumes:
+      - web_data_kunde2:/var/www/html
     networks:
       - internal-network
       - proxy-network
 
 volumes:
   db_data_kunde2:
+  web_data_kunde2:
 
 networks:
-  internal-network: {}   
+  internal-network: {}
   proxy-network:
-    external: true       
+    external: true
