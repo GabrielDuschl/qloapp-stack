@@ -2,11 +2,11 @@ FROM php:8.1-apache
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-        git \                    
-        unzip \                  
-        libxml2-dev \            
-        libzip-dev \             
-        libpng-dev \             
+        git \
+        unzip \
+        libxml2-dev \
+        libzip-dev \
+        libpng-dev \
         libjpeg-dev \
         libfreetype6-dev \
     && rm -rf /var/lib/apt/lists/*
@@ -19,9 +19,9 @@ RUN a2enmod rewrite \
 
 WORKDIR /var/www/html
 
+# Klont dein Repo, leert danach den Smarty-Cache und setzt die Rechte
 RUN git clone --depth 1 --branch develop https://github.com/GabrielDuschl/QloApp.git . \
+    && rm -rf var/cache/* \
     && chown -R www-data:www-data /var/www/html
 
-
 EXPOSE 80
-
