@@ -15,6 +15,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        # sorgt dafür, dass /admin zu /login wird
+        ADMIN_DIR: "login"
     restart: unless-stopped
     depends_on:
       - db
@@ -23,7 +26,7 @@ services:
     env_file:
       - ./stack.env
     environment:
-      DB_HOST:     "db"
+      DB_HOST:     db
       DB_NAME:     "${MYSQL_DATABASE}"
       DB_USER:     "${MYSQL_USER}"
       DB_PASSWORD: "${MYSQL_PASSWORD}"
@@ -31,8 +34,12 @@ services:
       - internal-network
       - proxy-network
     volumes:
+      # 1) Persistiere nur das Config-Verzeichnis,
+      #    damit settings.inc.php erhalten bleibt
       - qloapps_config:/var/www/html/config
+      # 2) Optional: Persistiere Bilder & Uploads
       - qloapps_img:/var/www/html/img
+      # 3) Optional: Persistiere Cache & Logs
       - qloapps_var:/var/www/html/var
 
 volumes:
