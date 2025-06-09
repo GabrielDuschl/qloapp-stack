@@ -15,7 +15,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: qloapps:latest
     restart: unless-stopped
     depends_on:
       - db
@@ -32,7 +31,6 @@ services:
       - internal-network
       - proxy-network
     volumes:
-      # Persistiere die wichtigen Ordner:
       - qloapps_config:/var/www/html/config
       - qloapps_img:/var/www/html/img
       - qloapps_var:/var/www/html/var
