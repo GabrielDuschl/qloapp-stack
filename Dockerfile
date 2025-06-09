@@ -12,21 +12,21 @@ RUN apt-get update \
 
 WORKDIR /var/www/html
 
-# Build-Argument für den Namen des Admin-Verzeichnisses
 ARG ADMIN_DIR=login
 
-# Klonen, Umbenennen, Cache löschen, Rechte setzen
+# Klonen, admin→login umbenennen, Cache löschen, Rechte setzen
 RUN git clone --depth 1 --branch develop https://github.com/DeinUser/QloApp.git . \
  && mv admin "$ADMIN_DIR" \
  && rm -rf var/cache/* \
  && chown -R www-data:www-data /var/www/html
 
-# Inline-Entrypoint: löscht /install, sobald settings.inc.php da ist
-ENTRYPOINT ["/bin/sh","-c",\
-  "if [ -f /var/www/html/config/settings.inc.php ]; then \
-      echo '[entrypoint] config gefunden, entferne /install'; \
+# Inline-Entrypoint: löscht /install, sobald settings.inc.php vorhanden
+ENTRYPOINT ["/bin/sh", "-c", "\
+    if [ -f /var/www/html/config/settings.inc.php ]; then \
+      echo '[entrypoint] Installation erkannt – entferne /install'; \
       rm -rf /var/www/html/install; \
-   fi; \
-   exec docker-php-entrypoint apache2-foreground"]
+    fi; \
+    exec docker-php-entrypoint apache2-foreground\
+"]
 
 EXPOSE 80
