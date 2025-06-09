@@ -19,7 +19,7 @@ RUN a2enmod rewrite \
 
 WORKDIR /var/www/html
 
-RUN git clone --depth 1 https://github.com/GabrielDuschl/QloApp.git . \
+RUN git clone --depth 1 --branch develop https://github.com/GabrielDuschl/QloApp.git . \
     && chown -R www-data:www-data /var/www/html
 
 
